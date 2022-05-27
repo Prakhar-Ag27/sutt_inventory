@@ -1,0 +1,6 @@
+Inventory Management System
+student, moderator
+many inventories with different names.
+model-1 -> list_of_items(name, price, quantity, issuers' list, unique item code)
+detail view
+moderator can add inventory and edit its info.
