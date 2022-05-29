@@ -17,14 +17,18 @@
           <div class="col-md-5 p-3">
                 <h1>Inventory Management System</h1>
                 {% if user.is_authenticated %}
-                <p>Welcome, {{ user.username }} !</p>
-                <a href="http://127.0.0.1:8000/inventory/">Click to see a list of itmes.</a><br>
-                <a href="http://127.0.0.1:8000/inventory/issue/">Click to issue an item.</a><br>
-                <a href="http://127.0.0.1:8000/accounts/logout/">Click to log out.</a>
+                <p>Welcome, <span style="color: red;">{{ user.username }}</span> !</p>
+                <p><a class="btn btn-primary" href="http://127.0.0.1:8000/inventory/">List of itmes</a></p>
+                <p><a class="btn btn-primary" href="http://127.0.0.1:8000/inventory/logadd/">Stock log</a></p>
+                <p><a class="btn btn-primary" href="http://127.0.0.1:8000/inventory/logtransact/">Borrow log</a></p>
+                {% if request.user.is_staff %}
+                <p><a class="btn btn-primary" href="http://127.0.0.1:8000/admin/">Admin page</a></p>
+                {% endif %}
+                <p><a class="btn btn-primary" href="http://127.0.0.1:8000/accounts/logout/">Log out</a></p>
                 
                 {% else %}
                 <h3>Welcome, please log in to access the site.</h3>
-                <a href="http://127.0.0.1:8000/accounts/login/">Click to log in</a>
+                <a class="btn btn-primary" href="http://127.0.0.1:8000/accounts/login/">Click to log in</a>
                 {% endif %}
           </div>
         </div>
