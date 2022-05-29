@@ -1,12 +1,69 @@
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">IMS</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/ ">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{user.username}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="http://127.0.0.1:8000/accounts/logout/">Sign out.</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <a class="btn btn-primary" href="/templates/fnapp/search.html" role="button">Search</a>
+            </form>
+          </div>
+        </div>
+      </nav>
     <h1>This is the list of items available in the inventory.</h1>
+    <table cellspacing="10" cellpadding="10" border="01" >
+        <tr>
+            <th>Type of item</th>
+            <th>Name of the item</th>
+            <th>Quantity available</th>
+            <th>Last issued</th>
+            <th>No. of item currently issued out</th>
+            <th>Unique item code</th>
+        </tr>
+        {% for thing in item_list %}
+            <tr align="center">
+                <td>{{thing.type_of_item}}</td>
+                <td>{{thing.name_of_item}}</td>
+                <td>{{thing.qty_available}}</td>
+                <td>{{thing.last_issued}}</td>
+                <td>{{thing.no_of_items_issued_out}}</td>
+                <td>{{thing.unique_code}}</td>
+            </tr>
+        {% endfor %}
+    </table><br>
+    <a href="{% url 'issue' %}">Click to issue an item.</a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 </body>
 </html>
