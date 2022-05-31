@@ -1,13 +1,19 @@
+from imp import reload
 from django.shortcuts import render
-from .models import items, issue_items
+from .models import Item, Through, Student
 from django.http import HttpResponse
 from django.shortcuts import render
-from .forms import issue_form
-import django.contrib.auth
-
+import smtplib
+import os
 
 def details(request):
-    item_list = items.objects.all()[:]
+    try:
+        obj = Student.objects.get(email_id = request.user.email)
+    except Student.DoesNotExist:
+        obj = Student(first_name=request.user.first_name, last_name=request.user.last_name, email_id=request.user.email)
+        obj.save()
+
+    item_list = Item.objects.all()
     context = {'item_list': item_list}
     if request.user.is_authenticated:
         return render(request, 'fnapp/detailspage.html', context)
@@ -16,8 +22,8 @@ def details(request):
         return render(request, 'fnapp/notlogin.html')
 
 def issue(request, itemcode):
-    tobeissued = items.objects.all()[:]
-    context = {'tobeissued': tobeissued, "itemcode" : itemcode}
+    tobeissued = Item.objects.get(unique_code=itemcode)
+    context = {'tobeissued': tobeissued}
     if request.user.is_authenticated:
         return render(request, 'fnapp/issuepage.html', context)
     else:
@@ -25,37 +31,57 @@ def issue(request, itemcode):
 
 def success(request, itemcode):
     if request.user.is_authenticated:
-        z = items.objects.all()[:]
-        
-        for item_req in z:
-            if item_req.unique_code == itemcode:
-                obj = issue_items()
-                obj.username_of_borrower = request.user.username
-                obj.email_of_borrower = request.user.email
-                obj.borrowed_item_code = itemcode
-                obj.save()
+        if request.user.is_superuser:
+            pass
+        else:
+            obj = Through()
+            obj.item = Item.objects.get(unique_code=itemcode)
+            obj.student = Student.objects.get(email_id=request.user.email)
+            obj.qty_issued = int(request.POST['items'])
+            obj.save()
+        print(int(request.POST['items']))
+        item_issued = Item.objects.get(unique_code = itemcode)
+        item_issued.total_qty = item_issued.total_qty - int(request.POST['items'])
+        item_issued.current_out = item_issued.current_out + int(request.POST['items'])
+        item_issued.save()
 
-        for item_req in z:
-            if item_req.unique_code == itemcode:
-                item_req.no_of_items_issued_out = item_req.no_of_items_issued_out + 1
-                item_req.qty_available = item_req.qty_available - 1
-                item_req.save()
+        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.ehlo()
+            smtp.login("agrawal.prakhar35@gmail.com", "tndumdixwmkppymx")
+            subject = 'Regarding issue of item from IMS'
+            body = f'You have successfully issued {Item.name_of_item} with item code {Item.unique_code}.'
+            msg = f'Subject: {subject}\n\n{body}'
+            smtp.sendmail("agrawal.prakhar35@gmail.com", request.user.email, msg)
+
         return render(request, 'fnapp/successpage.html', {"itemcode" : itemcode})
+
     else:
         return render(request, 'fnapp/notlogin.html')
 
 def log_add(request):
-    logitems = items.objects.all()[:]
+    logitems = Item.objects.all().order_by(-'added_on')
     context = {'logitems': logitems}
     if request.user.is_authenticated:
         return render(request, 'fnapp/log_add.html', context)
     else:
         return render(request, 'fnapp/notlogin.html')
 
-def log_transact(request):
-    logitems = issue_items.objects.all()[:]
+def log_issue(request):
+    logitems = Through.objects.all().order_by(-'time_of_issue')
     context = {'logitems': logitems}
     if request.user.is_authenticated:
-        return render(request, 'fnapp/log_transact.html', context)
+        return render(request, 'fnapp/log_issue.html', context)
     else:
         return render(request, 'fnapp/notlogin.html')
+
+def log_return(request):
+    logitems = Through.objects.all().order_by(-'time_of_return')
+    context = {'logitems': logitems}
+    if request.user.is_authenticated:
+        return render(request, 'fnapp/log_return.html', context)
+    else:
+        return render(request, 'fnapp/notlogin.html')
+    
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Log</title>
+</head>
+<body>
+    <h1 style="text-align: center; border: 3px solid green;">TRANSACTION LOG</h1>
+    <table class="table">
+        <tr>
+            <th>Time of issue</th>
+            <th>First name of borrower</th>
+            <th>Last name of borrower</th>
+            <th>Email of borrower</th>
+            <th>Borrowed item code</th>
+            
+        </tr>
+        {% for thing in logitems %}
+            <tr style="color: black;">
+                <td>{{thing.qty_issued}}</td>
+                <td>{{thing.student.first_name}}</td>
+                <td>{{thing.student.last_name}}</td>
+                <td>{{thing.student.email_id}}</td>
+                <td>{{thing.item.unique_code}}</td>
+            </tr>
+        {% endfor %}
+    </table><br>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

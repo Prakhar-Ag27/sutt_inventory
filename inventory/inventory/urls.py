@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name="userlogin/index.html")),
-    path('inventory/', include('fnapp.urls') ),
+    path('inventory/', include('fnapp.urls')),
 ]

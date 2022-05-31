@@ -9,24 +9,25 @@
 </head>
 <body>
     <h1>You are here to issue </h1>
-    {% for thing in tobeissued %}
-        {% if thing.unique_code == itemcode %}
             <table class="table">
             <th>Name of the item</th>
             <th>Quantity available</th>
-            <th>Last issued on</th>
+            <th>Currently issued</th>
             <th></th>
             <th></th>
             <tr>
-                <td>{{thing.name_of_item}}</td>
-                <td>{{thing.qty_available}}</td>
-                <td>{{thing.last_issued}}</td>
+                <td>{{tobeissued.name_of_item}}</td>
+                <td>{{tobeissued.total_qty}}</td>
+                <td>{{tobeissued.current_out}}</td>
             </tr>
             </table>    
-            <p>Are you sure you want to issue this?<span><a class="btn btn-primary" href="http://127.0.0.1:8000/inventory/success/{{itemcode}}">Yes</a></span></p>
-                
-        {% endif %}
-    {% endfor %}
+            <form action="{% url 'fnapp:success' tobeissued.unique_code %}", method="post">
+                {% csrf_token %}
+                <label for="items">No. of items to be issued</label>
+                <input type="number" id="items" name="items">
+                <input type="submit" value="Submit">
+            </form>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 </body>
 </html>
