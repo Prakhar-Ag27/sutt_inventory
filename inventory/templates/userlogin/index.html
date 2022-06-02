@@ -17,10 +17,11 @@
                 <h1>Inventory Management System</h1>
                 {% if user.is_authenticated %}
                 <p>Welcome, <span style="color: red;">{{ user.first_name }}</span> !</p>
-                <p><a class="btn btn-primary" href="{% url 'fnapp:details' %}">List of itmes</a></p>
-                <p><a class="btn btn-primary" href="{% url 'fnapp:logadd' %}">Stock log</a></p>
-                <p><a class="btn btn-primary" href="{% url 'fnapp:logissue' %}">Issue log</a></p>
-                <p><a class="btn btn-primary" href="{% url 'fnapp:logreturn' %}">Return log</a></p>
+                <p><a class="btn btn-primary" href="{% url 'fnapp:details' %}">Issue items.</a></p>
+                <p><a class="btn btn-primary" href="{% url 'fnapp:returnitems' %}">Return items</a></p>
+                <p><a class="btn btn-primary" href="{% url 'fnapp:logadd' %}">Stock log</a>
+                  <a class="btn btn-primary" href="{% url 'fnapp:logissue' %}">Issue log</a>
+                  <a class="btn btn-primary" href="{% url 'fnapp:logreturn' %}">Return log</a></p>
                 {% if request.user.is_staff %}
                 <p><a class="btn btn-primary" href="http://127.0.0.1:8000/admin/">Admin page</a></p>
                 {% endif %}
