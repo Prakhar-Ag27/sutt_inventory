@@ -19,13 +19,15 @@
             
         </tr>
         {% for thing in logitems %}
+            {%if thing.qty_returned != True %}
             <tr style="color: black;">
-                <td>{{thing.qty_returned}}</td>
+                <td>{{thing.time_of_return}}</td>
                 <td>{{thing.student.first_name}}</td>
                 <td>{{thing.student.last_name}}</td>
                 <td>{{thing.student.email_id}}</td>
                 <td>{{thing.item.unique_code}}</td>
             </tr>
+            {% endif %}
         {% endfor %} 
     </table><br>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>

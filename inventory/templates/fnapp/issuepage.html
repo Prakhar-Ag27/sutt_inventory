@@ -24,7 +24,7 @@
             <form action="{% url 'fnapp:success_issue' tobeissued.unique_code %}", method="post">
                 {% csrf_token %}
                 <label for="items">No. of items to be issued</label>
-                <input type="number" id="items" name="items">
+                <input type="number" id="items" name="items" min="1" max="{{tobeissued.total_qty}}">
                 <input type="submit" value="Submit">
             </form>
 

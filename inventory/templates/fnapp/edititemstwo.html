@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Item</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body style="text-align: center;">
+    <h1>Edit the selected item</h1>
+    <form class="" action="{% url 'fnapp:edititemthree' item_req.unique_code %}" method="post">
+        {% csrf_token %}
+        <label for="">Type of item</label><br>
+        <p><input type="text" name="type" id="type" required="required" aria-required="true" value="{{item_req.type_of_item}}"></p>
+        
+        <label for="">Name of item</label><br>
+        <p><input type="text" name="name" required="required" aria-required="true" value="{{item_req.name_of_item}}"></p>
+        
+        <label for="">Total quantity</label><br>
+        <p><input type="number" name="quantity" required="required" aria-required="true" value="{{item_req.total_qty}}" min="0"></p>
+        
+        <label for="">Current out</label><br>
+        <p><input type="number" name="out" required="required" aria-required="true" value="{{item_req.current_out}}" min="0"></p>
+
+        <input type="submit" class="btn btn-primary">
+      </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

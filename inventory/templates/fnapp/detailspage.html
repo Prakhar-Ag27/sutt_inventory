@@ -40,6 +40,12 @@
         
     </div>
     {% if type == "issue" %}
+        <form action="{% url 'fnapp:filter' %}" method="post" style="text-align: center;">
+            {% csrf_token %}
+            <input type="hidden" name="temp" value="issue" />
+            <input type="text" name="item" id="item" placeholder="Enter name of item" required>
+            <input type="submit" value="Submit">
+        </form>
         <table class="table">
             <tr>
                 <th>Type of item</th>
@@ -68,12 +74,52 @@
         </table><br>
         {% endif %}
 
-        {% if type == "return" %}
+    {% if type == "edit" %}
+        <form action="{% url 'fnapp:filter' %}" method="post" style="text-align: center;">
+            {% csrf_token %}
+            <input type="hidden" name="temp" value="edit" />
+            <input type="text" name="item" id="item" placeholder="Enter name of item" required>
+            <input type="submit" value="Submit">
+        </form>
         <table class="table">
             <tr>
                 <th>Type of item</th>
                 <th>Name of the item</th>
-                <th>Quantity issued</th>
+                <th>Quantity available</th>
+                <th>No. of item currently issued out</th>
+                <th>Unique item code</th>
+                <th>EDIT</th>
+            </tr>
+            {% for thing in item_list %}
+                <tr >
+                    <td>{{thing.type_of_item}}</td>
+                    <td>{{thing.name_of_item}}</td>
+                    <td>{{thing.total_qty}}</td>
+                    <td>{{thing.current_out}}</td>
+                    <td>{{thing.unique_code}}</td>
+                    {%if thing.total_qty > 0 %}
+                    <td><a class="btn btn-primary" href="{% url 'fnapp:edititemtwo' thing.unique_code %}">Edit this item.</a></td>
+                    {% endif %}
+                    {% if thing.total_qty <= 0 %}
+                        <td>Not enough quantity.</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table><br>
+        {% endif %}
+
+        {% if type == "return" %}
+        <form action="{% url 'fnapp:filter' %}" method="post" style="text-align: center;">
+            {% csrf_token %}
+            <input type="hidden" name="temp" value="return" />
+            <input type="text" name="item" id="item" placeholder="Enter name of item" required>
+            <input type="submit" value="Submit">
+        </form>
+        <table class="table">
+            <tr>
+                <th>Type of item</th>
+                <th>Name of the item</th>
+                <th>Currently issued</th>
                 <th>Time of issue</th>
                 <th>Unique item code</th>
                 <th>Return all</th>
@@ -84,14 +130,14 @@
                     <tr >
                         <td>{{thing.item.type_of_item}}</td>
                         <td>{{thing.item.name_of_item}}</td>
-                        <td>{{thing.qty_issued}}</td>
+                        <td>{{thing.current_issued}}</td>
                         <td>{{thing.time_of_issue}}</td>
                         <td>{{thing.item.unique_code}}</td>
-                        <td><a class="btn btn-primary" href="{% url 'fnapp:success_return' thing.item.unique_code 1 %}">Return all</a></td>
-                        <td><form action="{% url 'fnapp:success_return' thing.item.unique_code 0 %}", method="post">
+                        <td><a class="btn btn-primary" href="{% url 'fnapp:success_return' thing.item.unique_code 1 thing.time_of_issue_int %}">Return all</a></td>
+                        <td><form action="{% url 'fnapp:success_return' thing.item.unique_code 0 thing.time_of_issue_int %}", method="post">
                             {% csrf_token %}
                             <label for="items">No. of items to be returned</label>
-                            <input type="number" id="items" name="items">
+                            <input type="number" id="items" name="items" min="1" max="{{thing.current_issued}}">
                             <input type="submit" value="Submit">
                         </form></td>
                 {% endif %}

@@ -24,12 +24,14 @@
                   <a class="btn btn-primary" href="{% url 'fnapp:logreturn' %}">Return log</a></p>
                 {% if request.user.is_staff %}
                 <p><a class="btn btn-primary" href="http://127.0.0.1:8000/admin/">Admin page</a></p>
+                <p><a class="btn btn-primary" href="{% url 'fnapp:edititem' %}">Edit Items</a></p>
                 {% endif %}
                 <p><a class="btn btn-primary" href="http://127.0.0.1:8000/accounts/logout/">Log out</a></p>
                 
                 {% else %}
-                <h3>Welcome, please log in to access the site.</h3>
-                <a class="btn btn-primary" href="http://127.0.0.1:8000/accounts/login/">Click to log in</a>
+                <p><h3>Welcome, please log in to access the site.</h3></p>
+                <p><a class="btn btn-primary" href="http://127.0.0.1:8000/accounts/login/">User/Moderator log in</a></p>
+                <p><a class="btn btn-primary" href="http://127.0.0.1:8000/admin/">Admin log in</a></p>
                 {% endif %}
           </div>
         </div>
