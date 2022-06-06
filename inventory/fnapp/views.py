@@ -1,5 +1,6 @@
 from curses import is_term_resized
 from imp import reload
+import random
 from django.shortcuts import render
 from .models import Item, Through, Student
 from django.http import HttpResponse
@@ -7,6 +8,8 @@ from django.shortcuts import render
 import datetime
 from django.utils import timezone
 import smtplib
+from openpyxl import Workbook, load_workbook
+
 
 def details(request):
     try:
@@ -173,4 +176,38 @@ def filter(request):
     item_list = Item.objects.filter(name_of_item__iexact = name)
     context = {'item_list': item_list, 'type' : type}
     return render(request, 'fnapp/detailspage.html', context)
-    
+
+def simple_upload(request):
+    return render(request, 'fnapp/uploadpage.html')
+
+def success_upload(request):
+    wb = load_workbook(request.FILES['myfile'])
+    ws = wb.active
+    row = 2
+    col = 0
+    req_list = []
+    while True:
+        
+        while True:
+            char = chr(65 + col)
+            cell = char + str(row)
+            print(cell)
+            print(ws[cell].value)
+            if ws[cell].value or ws[cell].value == 0:
+                req_list.append(ws[cell].value)
+                col = col + 1
+            else:
+                col = col + 1
+                break;
+        Item.objects.create(name_of_item = req_list[0], type_of_item = req_list[1], total_qty = int(req_list[2]), current_out = int(req_list[3]), unique_code = random.randint(10_000_000, 99_999_999))
+        row = row + 1
+        col = 0
+        char = chr(65 + col)
+        cell = char + str(row)
+        req_list.clear()
+        if ws[cell].value:
+            pass
+        else:
+            break;
+
+    return render(request, 'fnapp/successpage_upload.html')

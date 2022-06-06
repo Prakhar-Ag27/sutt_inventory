@@ -16,4 +16,7 @@ urlpatterns = [
     path('editpage/<int:itemcode>/', views.edit_item_two, name='edititemtwo'),
     path('editsuccess/<int:itemcode>/', views.edit_item_three, name='edititemthree'),
     path('filter/', views.filter, name='filter'),
+    path('upload/', views.simple_upload, name='upload'),
+    path('successupload/', views.success_upload, name='success_upload'),
+    
 ]

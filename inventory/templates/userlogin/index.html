@@ -25,6 +25,7 @@
                 {% if request.user.is_staff %}
                 <p><a class="btn btn-primary" href="http://127.0.0.1:8000/admin/">Admin page</a></p>
                 <p><a class="btn btn-primary" href="{% url 'fnapp:edititem' %}">Edit Items</a></p>
+                <p><a class="btn btn-primary" href="{% url 'fnapp:upload' %}">Upload excel</a></p>
                 {% endif %}
                 <p><a class="btn btn-primary" href="http://127.0.0.1:8000/accounts/logout/">Log out</a></p>
                 
