@@ -1,6 +1,7 @@
 import email
 from urllib import request
 from django.db import models
+from django.contrib.auth.models import User
 import random
 
 class Item(models.Model):
@@ -15,9 +16,9 @@ class Item(models.Model):
         return self.name_of_item
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=15, editable = False)
-    last_name = models.CharField(max_length=15, editable = False)
-    email_id = models.EmailField(max_length=254, editable = False)
+    first_name = models.CharField(max_length=15)
+    last_name = models.CharField(max_length=15)
+    email_id = models.EmailField(max_length=254)
 
     def __str__(self):
         return self.first_name + self.last_name

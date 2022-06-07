@@ -43,7 +43,7 @@
         <form action="{% url 'fnapp:filter' %}" method="post" style="text-align: center;">
             {% csrf_token %}
             <input type="hidden" name="temp" value="issue" />
-            <input type="text" name="item" id="item" placeholder="Enter name of item" required>
+            <input type="text" name="item" id="item" placeholder="Enter name or type of item" required>
             <input type="submit" value="Submit">
         </form>
         <table class="table">
@@ -78,7 +78,7 @@
         <form action="{% url 'fnapp:filter' %}" method="post" style="text-align: center;">
             {% csrf_token %}
             <input type="hidden" name="temp" value="edit" />
-            <input type="text" name="item" id="item" placeholder="Enter name of item" required>
+            <input type="text" name="item" id="item" placeholder="Enter name or type of item" required>
             <input type="submit" value="Submit">
         </form>
         <table class="table">
@@ -112,7 +112,7 @@
         <form action="{% url 'fnapp:filter' %}" method="post" style="text-align: center;">
             {% csrf_token %}
             <input type="hidden" name="temp" value="return" />
-            <input type="text" name="item" id="item" placeholder="Enter name of item" required>
+            <input type="text" name="item" id="item" placeholder="Enter name or type of item" required>
             <input type="submit" value="Submit">
         </form>
         <table class="table">

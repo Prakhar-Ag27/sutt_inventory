@@ -8,7 +8,7 @@
     <title>Log</title>
 </head>
 <body>
-    <h1 style="text-align: center; border: 3px solid green;">TRANSACTION LOG</h1>
+    <h1 style="text-align: center; border: 3px solid green;">Issue LOG</h1>
     <table class="table">
         <tr>
             <th>Time of issue</th>
@@ -16,6 +16,7 @@
             <th>Last name of borrower</th>
             <th>Email of borrower</th>
             <th>Borrowed item code</th>
+            <th>Quantity issued</th>
             
         </tr>
         {% for thing in logitems %}
@@ -25,6 +26,7 @@
                 <td>{{thing.student.last_name}}</td>
                 <td>{{thing.student.email_id}}</td>
                 <td>{{thing.item.unique_code}}</td>
+                <td>{{thing.qty_issued}}</td>
             </tr>
         {% endfor %}
     </table><br>

@@ -2,6 +2,7 @@ from curses import is_term_resized
 from imp import reload
 import random
 from django.shortcuts import render
+import os
 from .models import Item, Through, Student
 from django.http import HttpResponse
 from django.shortcuts import render 
@@ -12,12 +13,6 @@ from openpyxl import Workbook, load_workbook
 
 
 def details(request):
-    try:
-        obj = Student.objects.get(email_id = request.user.email)
-    except Student.DoesNotExist:
-        obj = Student(first_name=request.user.first_name, last_name=request.user.last_name, email_id=request.user.email)
-        obj.save()
-
     item_list = Item.objects.all()
     context = {'item_list': item_list, 'type' : "issue"}
     if request.user.is_authenticated:
@@ -135,7 +130,7 @@ def log_add(request):
         return render(request, 'fnapp/notlogin.html')
 
 def log_issue(request):
-    logitems = Through.objects.all().order_by('-time_of_issue')
+    logitems = Through.objects.filter(qty_issued__gt = 0).order_by('-time_of_issue')
     context = {'logitems': logitems}
     if request.user.is_authenticated:
         return render(request, 'fnapp/log_issue.html', context)
@@ -143,7 +138,7 @@ def log_issue(request):
         return render(request, 'fnapp/notlogin.html')
 
 def log_return(request):
-    logitems = Through.objects.all().order_by('-time_of_return')
+    logitems = Through.objects.filter(qty_returned__gt = 0).order_by('-time_of_return')
     context = {'logitems': logitems}
     if request.user.is_authenticated:
         return render(request, 'fnapp/log_return.html', context)
@@ -174,7 +169,11 @@ def filter(request):
     name = request.POST['item']
     type = request.POST['temp']
     item_list = Item.objects.filter(name_of_item__iexact = name)
-    context = {'item_list': item_list, 'type' : type}
+    if item_list:
+        context = {'item_list': item_list, 'type' : type}
+    else:
+        item_list = Item.objects.filter(type_of_item__iexact = name)
+        context = {'item_list': item_list, 'type' : type}
     return render(request, 'fnapp/detailspage.html', context)
 
 def simple_upload(request):
@@ -191,8 +190,6 @@ def success_upload(request):
         while True:
             char = chr(65 + col)
             cell = char + str(row)
-            print(cell)
-            print(ws[cell].value)
             if ws[cell].value or ws[cell].value == 0:
                 req_list.append(ws[cell].value)
                 col = col + 1
